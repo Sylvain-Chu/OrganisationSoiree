@@ -8,9 +8,11 @@ namespace SondageSoiree.Models.DAL
 {
     public class Dal : IDal
     {
+        private SoireeContext soiree;
+
         public Dal()
         {
-            SoireeContext soiree = new SoireeContext();
+            soiree = new SoireeContext();
         }
 
         public int AjouterEtudiant(string nom, string prenom, string password)
@@ -30,7 +32,10 @@ namespace SondageSoiree.Models.DAL
 
         public int CreerRestaurant(string nom, string adresse, string telephone, string email)
         {
-            throw new NotImplementedException();
+            Restaurant restaurant = new Restaurant(nom, adresse, telephone, email);
+            this.soiree.Restaurants.Add(restaurant);
+            return this.soiree.SaveChanges();             
+            
         }
 
         public int CreerSondage(DateTime date)

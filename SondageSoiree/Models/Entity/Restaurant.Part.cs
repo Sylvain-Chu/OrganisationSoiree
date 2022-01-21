@@ -8,7 +8,22 @@ using System.Web;
 namespace SondageSoiree.Models.Entity
 {
     [MetadataType(typeof(RestaurantMetadata))]
-    public partial class Restaurant
+    public partial class Restaurant : IValidatableObject
     {
+        public Restaurant(string nom, string adresse, string telephone, string email)
+        {
+            Nom = nom;
+            Adresse = adresse;
+            Telephone = telephone;
+            Email = email;
+        }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            var valid = new List<ValidationResult>();
+            if (string.IsNullOrWhiteSpace(Telephone) && string.IsNullOrWhiteSpace(Email))
+                valid.Add(new ValidationResult("Vous devez saisir au moins un moyen de contacter le restaurant", new[] { "Telephone", "Email" }));
+            return valid;
+        }
     }
 }

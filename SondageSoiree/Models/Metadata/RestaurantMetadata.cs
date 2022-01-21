@@ -18,10 +18,9 @@ namespace SondageSoiree.Models.Metadata
         [StringLength(250)]
         public string Adresse;
 
-        [Phone]
         [StringLength(20)]
         [Display(Name = "Téléphone")]
-        //[RegularExpression(@"^0[0-9]{9}$")]
+        [RegularExpression(@"^0[0-9]{9}$", ErrorMessage ="Veuillez mettre un numéro de téléphone")]        
         public string Telephone;
     }
 }

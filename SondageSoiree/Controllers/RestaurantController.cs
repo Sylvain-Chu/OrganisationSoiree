@@ -1,4 +1,5 @@
-﻿using SondageSoiree.Models.Entity;
+﻿using SondageSoiree.Models.DAL;
+using SondageSoiree.Models.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,12 @@ namespace SondageSoiree.Controllers
         [HttpPost]
         public ActionResult CreerRestaurant(Restaurant poResto)
         {
+            if (ModelState.IsValid)
+            {
+                Dal dal = new Dal();
+
+                dal.CreerRestaurant(poResto.Nom, poResto.Adresse, poResto.Telephone, poResto.Email);
+            }
             return View();
         }
     }
