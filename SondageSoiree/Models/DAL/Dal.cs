@@ -70,12 +70,31 @@ namespace SondageSoiree.Models.DAL
 
         public IList<Restaurant> RenvoieTousLesRestaurants()
         {
-            throw new NotImplementedException();
+            
+
+            return (IList<Restaurant>)this.soiree.Restaurants.OrderBy(r => r.Nom);
         }
 
         public bool RestaurantExist(string nom)
         {
-            throw new NotImplementedException();
+
+            return this.soiree.Restaurants.Any(r => r.Nom != nom);
+            /*
+            int nbrRestaurantExist = (
+            from r in this.soiree.Restaurants
+            where r.Nom == nom
+            select r
+            ).Count();
+
+
+            if (nbrRestaurantExist >=1)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }*/
         }
 
         public bool VoteExist(int idSondage, int idEtudiant)

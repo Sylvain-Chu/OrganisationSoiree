@@ -13,11 +13,7 @@ namespace SondageSoiree
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Restaurant", action = "CreerRestaurant", id = UrlParameter.Optional }
-            );
+
 
             routes.MapRoute(
                 name: "Blog",
@@ -26,11 +22,11 @@ namespace SondageSoiree
                 constraints: new { date = @"(\d{1,2})-(\d{1,2})-(\d{4})" }
             );
 
-            /*routes.MapRoute(
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
-            );*/
+                defaults: new { controller = "Restaurant", action = "Index", id = UrlParameter.Optional }
+            );
 
         }
     }

@@ -10,10 +10,17 @@ namespace SondageSoiree.Controllers
 {
     public class RestaurantController : Controller
     {
+        private readonly IDal _dal;
+        public RestaurantController(IDal dal)
+        {
+            _dal = dal;
+        }
+
+
         // GET: Restaurant
         public ActionResult Index()
         {
-            return View();
+            return View(_dal.RenvoieTousLesRestaurants());
         }
 
         public ActionResult CreerRestaurant()
@@ -28,7 +35,11 @@ namespace SondageSoiree.Controllers
             {
                 Dal dal = new Dal();
 
-                dal.CreerRestaurant(poResto.Nom, poResto.Adresse, poResto.Telephone, poResto.Email);
+                if (dal.RestaurantExist(poResto.Nom))
+                {
+                    dal.CreerRestaurant(poResto.Nom, poResto.Adresse, poResto.Telephone, poResto.Email);
+                }
+
             }
             return View();
         }
