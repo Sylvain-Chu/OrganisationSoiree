@@ -13,8 +13,6 @@ namespace SondageSoiree
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-
-
             routes.MapRoute(
                 name: "Blog",
                 url: "Photo/{date}",

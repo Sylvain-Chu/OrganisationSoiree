@@ -316,6 +316,8 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Restaurant\CreerRestaurant.cshtml" />
     <Content Include="Views\Restaurant\Index.cshtml" />
+    <Content Include="Views\Restaurant\AfficherRestaurant.cshtml" />
+    <Content Include="Views\Restaurant\ModifierRestaurant.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Photo\" />

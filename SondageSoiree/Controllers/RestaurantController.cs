@@ -31,17 +31,44 @@ namespace SondageSoiree.Controllers
         [HttpPost]
         public ActionResult CreerRestaurant(Restaurant poResto)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+                return View(poResto);
+
+            Dal dal = new Dal();
+
+            if (dal.RestaurantExist(poResto.Nom))
             {
-                Dal dal = new Dal();
-
-                if (dal.RestaurantExist(poResto.Nom))
-                {
-                    dal.CreerRestaurant(poResto.Nom, poResto.Adresse, poResto.Telephone, poResto.Email);
-                }
-
+                ModelState.AddModelError("Non", "Un restaurant à déjà le meme nom");
+                return View(poResto);
             }
-            return View();
+
+            dal.CreerRestaurant(poResto.Nom, poResto.Adresse, poResto.Telephone, poResto.Email);
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult AfficherRestaurant(int id)
+        {
+            Dal dal = new Dal();
+            Restaurant r = dal.RenvoieRestaurant(id);
+            return View(r);
+        }
+        public ActionResult ModifierRestaurant(int id)
+        {
+            Dal dal = new Dal();
+            Restaurant r = dal.RenvoieRestaurant(id);
+            return View(r);
+        }
+
+        [HttpPost]
+        public ActionResult ModifierRestaurant(Restaurant restaurant)
+        {
+            if (!ModelState.IsValid)
+                return View(restaurant);
+
+            Dal dal = new Dal();
+
+            dal.ModifierRestaurant(restaurant.Id, restaurant.Nom, restaurant.Adresse, restaurant.Telephone, restaurant.Email);
+            return RedirectToAction("AfficherRestaurant", restaurant);
         }
     }
 }

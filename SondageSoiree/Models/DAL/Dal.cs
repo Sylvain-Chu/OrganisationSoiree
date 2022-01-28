@@ -34,8 +34,7 @@ namespace SondageSoiree.Models.DAL
         {
             Restaurant restaurant = new Restaurant(nom, adresse, telephone, email);
             this.soiree.Restaurants.Add(restaurant);
-            return this.soiree.SaveChanges();             
-            
+            return this.soiree.SaveChanges();
         }
 
         public int CreerSondage(DateTime date)
@@ -50,7 +49,12 @@ namespace SondageSoiree.Models.DAL
 
         public void ModifierRestaurant(int idResto, string nom, string adresse, string telephone, string email)
         {
-            throw new NotImplementedException();
+            Restaurant r = RenvoieRestaurant(idResto);
+            r.Nom = nom;
+            r.Adresse = adresse;
+            r.Telephone= telephone;
+            r.Email = email;
+            soiree.SaveChanges();
         }
 
         public Eleve RenvoieEtudiant(int idEtudiant)
@@ -60,7 +64,7 @@ namespace SondageSoiree.Models.DAL
 
         public Restaurant RenvoieRestaurant(int idRestaurant)
         {
-            throw new NotImplementedException();
+            return this.soiree.Restaurants.Find(idRestaurant);
         }
 
         public IList<Resultat> RenvoieResultat(int idSondage)
@@ -70,31 +74,12 @@ namespace SondageSoiree.Models.DAL
 
         public IList<Restaurant> RenvoieTousLesRestaurants()
         {
-            
-
-            return (IList<Restaurant>)this.soiree.Restaurants.OrderBy(r => r.Nom);
-        }
+            return this.soiree.Restaurants.ToList();
+        } 
 
         public bool RestaurantExist(string nom)
         {
-
-            return this.soiree.Restaurants.Any(r => r.Nom != nom);
-            /*
-            int nbrRestaurantExist = (
-            from r in this.soiree.Restaurants
-            where r.Nom == nom
-            select r
-            ).Count();
-
-
-            if (nbrRestaurantExist >=1)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }*/
+            return this.soiree.Restaurants.Any(r => r.Nom == nom);
         }
 
         public bool VoteExist(int idSondage, int idEtudiant)

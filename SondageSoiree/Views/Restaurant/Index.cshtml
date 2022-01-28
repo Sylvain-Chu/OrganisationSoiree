@@ -1,19 +1,7 @@
 ﻿@model IEnumerable<SondageSoiree.Models.Entity.Restaurant>
 
-@{
-    Layout = null;
-}
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-</head>
-<body>
     <p>
-        @Html.ActionLink("Create New", "Create")
+        @Html.ActionLink("Crée un restaurant", "CreerRestaurant")
     </p>
     <table class="table">
         <tr>
@@ -31,29 +19,29 @@
             </th>
             <th></th>
         </tr>
-    
-    @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nom)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Adresse)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Telephone)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-            </td>
-        </tr>
-    }
-    
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nom)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Adresse)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Telephone)
+                </td>
+                <td>
+                    @Html.ActionLink("Modifier", "ModifierRestaurant", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "AfficherRestaurant", new { id = item.Id })
+                </td>
+            </tr>
+        }
+
     </table>
 </body>
 </html>
