@@ -1,8 +1,12 @@
 ﻿@model IEnumerable<SondageSoiree.Models.Entity.Restaurant>
 
-    <p>
+<p>
+    @if(User.IsInRole("Admin"))
+    {
         @Html.ActionLink("Crée un restaurant", "CreerRestaurant")
-    </p>
+    }
+    
+</p>
     <table class="table">
         <tr>
             <th>

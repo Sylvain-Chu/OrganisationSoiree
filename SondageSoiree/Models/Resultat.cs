@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -17,7 +18,7 @@ namespace SondageSoiree.Models
             set { nbVote = value; }
         }
 
-
+        [Key]
         public string Nom
         {
             get { return nom; }

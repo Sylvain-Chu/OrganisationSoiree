@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Helpers;
 
 namespace SondageSoiree.Models.DAL
 {
@@ -17,17 +18,42 @@ namespace SondageSoiree.Models.DAL
 
         public int AjouterEtudiant(string nom, string prenom, string password)
         {
-            throw new NotImplementedException();
+            Eleve eleve = new Eleve()
+            {
+                Nom = nom,
+                Prenom = prenom,
+                Password = Crypto.HashPassword(password)
+            };
+            
+            this.soiree.Eleves.Add(eleve);
+            return this.soiree.SaveChanges();
         }
 
         public int AjouterVote(int idSondage, int idResto, int idEtudiant)
         {
-            throw new NotImplementedException();
+            Vote v = new Vote()
+            {
+                IdEtudiant = idEtudiant,
+                IdResto = idResto,
+                IdSondage = idSondage
+            };
+            this.soiree.Votes.Add(v);
+            return this.soiree.SaveChanges();
         }
 
         public Eleve Authentifier(string nom, string password)
         {
-            throw new NotImplementedException();
+
+            Eleve el = soiree.Eleves.FirstOrDefault(e => e.Nom == nom);
+            
+            if (el != null && Crypto.VerifyHashedPassword(el.Password, password))
+            {
+                return el;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public int CreerRestaurant(string nom, string adresse, string telephone, string email)
@@ -39,12 +65,19 @@ namespace SondageSoiree.Models.DAL
 
         public int CreerSondage(DateTime date)
         {
-            throw new NotImplementedException();
+            Sondage sondage = new Sondage(date);
+            this.soiree.Sondages.Add(sondage);
+            return this.soiree.SaveChanges();
         }
 
         public void Dispose()
         {
             throw new NotImplementedException();
+        }
+
+        public bool EtudiantExist(string nom)
+        {
+            return this.soiree.Eleves.Any(e => e.Nom == nom);
         }
 
         public void ModifierRestaurant(int idResto, string nom, string adresse, string telephone, string email)
@@ -59,7 +92,7 @@ namespace SondageSoiree.Models.DAL
 
         public Eleve RenvoieEtudiant(int idEtudiant)
         {
-            throw new NotImplementedException();
+            return this.soiree.Eleves.Find(idEtudiant);
         }
 
         public Restaurant RenvoieRestaurant(int idRestaurant)
@@ -69,13 +102,31 @@ namespace SondageSoiree.Models.DAL
 
         public IList<Resultat> RenvoieResultat(int idSondage)
         {
-            throw new NotImplementedException();
+            return this.soiree.Restaurants
+                .GroupJoin(
+                this.soiree.Votes.Where(v => v.IdSondage == idSondage),
+                r => r.Id,
+                v => v.IdResto,
+                (r, v) => new Resultat() { Nom = r.Nom, NbVote = v.Count() }
+                )
+                .OrderByDescending(r => r.NbVote)
+                .ToList();
+        }
+
+        public Sondage RenvoieSondage(int idSondage)
+        {
+            return this.soiree.Sondages.Find(idSondage);
         }
 
         public IList<Restaurant> RenvoieTousLesRestaurants()
         {
             return this.soiree.Restaurants.ToList();
-        } 
+        }
+
+        public IList<Sondage> RenvoieTousLesSondages()
+        {
+            return this.soiree.Sondages.ToList();
+        }
 
         public bool RestaurantExist(string nom)
         {
@@ -84,7 +135,8 @@ namespace SondageSoiree.Models.DAL
 
         public bool VoteExist(int idSondage, int idEtudiant)
         {
-            throw new NotImplementedException();
+            return this.soiree.Votes.Any(v => v.IdSondage == idSondage && v.IdEtudiant == idEtudiant);
         }
+
     }
 }

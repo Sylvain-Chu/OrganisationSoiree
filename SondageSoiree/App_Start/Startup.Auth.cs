@@ -9,7 +9,7 @@ using SondageSoiree.Models;
 
 namespace SondageSoiree
 {
-    public partial class Startup
+    /*public partial class Startup
     {
         // Pour plus d'informations sur la configuration de l'authentification, visitez https://go.microsoft.com/fwlink/?LinkId=301864
         public void ConfigureAuth(IAppBuilder app)
@@ -64,5 +64,5 @@ namespace SondageSoiree
             //    ClientSecret = ""
             //});
         }
-    }
+    }*/
 }

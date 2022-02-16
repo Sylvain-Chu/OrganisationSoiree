@@ -1,0 +1,25 @@
+﻿@model IEnumerable<SondageSoiree.Models.Entity.Sondage>
+
+<p>
+    @Html.ActionLink("Create New", "CreerSondage")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Date)
+        </td>
+        <td>
+            @Html.ActionLink("Voter", "Index", new { id=item.Id, controller = "Vote"}) 
+        </td>
+    </tr>
+}
+
+</table>

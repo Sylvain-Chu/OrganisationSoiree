@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace SondageSoiree.Controllers
 {
+    [Authorize]
     public class RestaurantController : Controller
     {
         private readonly IDal _dal;
@@ -16,35 +17,35 @@ namespace SondageSoiree.Controllers
             _dal = dal;
         }
 
-
-        // GET: Restaurant
         public ActionResult Index()
         {
             return View(_dal.RenvoieTousLesRestaurants());
         }
-
+            
+        [Authorize(Roles = "Admin")]
         public ActionResult CreerRestaurant()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult CreerRestaurant(Restaurant poResto)
         {
             if (!ModelState.IsValid)
                 return View(poResto);
 
-            Dal dal = new Dal();
-
-            if (dal.RestaurantExist(poResto.Nom))
+            
+            if (_dal.RestaurantExist(poResto.Nom))
             {
                 ModelState.AddModelError("Non", "Un restaurant à déjà le meme nom");
                 return View(poResto);
             }
 
-            dal.CreerRestaurant(poResto.Nom, poResto.Adresse, poResto.Telephone, poResto.Email);
+            _dal.CreerRestaurant(poResto.Nom, poResto.Adresse, poResto.Telephone, poResto.Email);
             return RedirectToAction("Index");
         }
+
 
         public ActionResult AfficherRestaurant(int id)
         {
@@ -52,22 +53,23 @@ namespace SondageSoiree.Controllers
             Restaurant r = dal.RenvoieRestaurant(id);
             return View(r);
         }
+
+        [Authorize(Roles = "Admin")]
         public ActionResult ModifierRestaurant(int id)
         {
-            Dal dal = new Dal();
-            Restaurant r = dal.RenvoieRestaurant(id);
+            Restaurant r = _dal.RenvoieRestaurant(id);
             return View(r);
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult ModifierRestaurant(Restaurant restaurant)
         {
             if (!ModelState.IsValid)
                 return View(restaurant);
 
-            Dal dal = new Dal();
 
-            dal.ModifierRestaurant(restaurant.Id, restaurant.Nom, restaurant.Adresse, restaurant.Telephone, restaurant.Email);
+            _dal.ModifierRestaurant(restaurant.Id, restaurant.Nom, restaurant.Adresse, restaurant.Telephone, restaurant.Email);
             return RedirectToAction("AfficherRestaurant", restaurant);
         }
     }

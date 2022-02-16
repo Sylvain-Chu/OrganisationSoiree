@@ -26,7 +26,13 @@ namespace SondageSoiree.Models.DAL
 
         Restaurant RenvoieRestaurant(int idRestaurant);
 
+        Sondage RenvoieSondage(int idSondage);
+
+        IList<Sondage> RenvoieTousLesSondages();
+
         bool RestaurantExist(string nom);
+
+        bool EtudiantExist(string nom);
 
         bool VoteExist(int idSondage, int idEtudiant);
     }
